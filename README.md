@@ -247,9 +247,81 @@ fig = px.scatter_mapbox(data, lat='latitude', lon='longitude', color= 'price_per
 
 fig.show()
 ```
-[Scatter map.zip](https://github.com/user-attachments/files/20596503/Scatter.map.zip)
+
+
+https://github.com/user-attachments/assets/d02d65bb-8d35-4090-b8a9-047dbacd11fc
+
+
 
 
 **Insights** – Listings are heavily concentrated around Manhattan, Brooklyn and Queens, indicating these boroughs have the highest Airbnb activity. High-priced listings (green/yellow dots) are clustered mostly around Manhattan, particularly in central and downtown areas. The majority of listings are lower-priced (dark purple), spread more widely across the boroughs. Outer boroughs like Staten Island and Bronx have fewer high-priced listings, suggesting a more budget-oriented market. The visual effectively communicates both location density and price range at a glance, helping identifying premium zones and budget friendly areas. 
+
+
+**Neighborhood with the highest listing** - This chart compares the top 10 neighborhood with the highest listing showing property listing counts across different neighborhoods.
+```
+Top_10 = data.pivot_table(index='neighbourhood', aggfunc='size').sort_values(ascending=False).head(10)
+
+ax = Top_10.plot(kind='bar')
+
+for container in ax.containers:
+    ax.bar_label(container,fmt='{:,.0f}')
+
+plt.xticks(rotation=45, ha='right')
+plt.xlabel('neighbourhood')
+plt.title('Top 10 Neighbourhood with the Highest Listing')
+plt.show()
+```
+ ![image](https://github.com/user-attachments/assets/23abff3a-d010-4eab-bab7-37a7c7b69f80)
+
+
+**Insights** – Listings are heavily concentrated around Bedford-Stuyvesant, and Williamsburg with listings above 2,000 representing nearly 32% of the total listings among these top 10 neighborhoods indicating these areas are major rental/property hotspots. Mid-range areas are Bushwick-Upper West Side with 1000-1500 listings.
+
+
+
+**Hosts number of reviews** – This analysis examines the top 10 hosts with their respective number of reviews broken down by neighborhood group across New York City.
+```
+reviews = data.pivot_table(index='host_name',aggfunc='sum',columns='neighbourhood_group',values='number_of_reviews')
+
+top =reviews.sum(axis=1).sort_values(ascending=False).head(10)
+
+top_review = reviews.loc[top.index]
+
+top_review.plot(kind='bar',stacked=True, figsize=(10,6))
+plt.xticks(rotation=45, ha='right')
+plt.title('Top 10 host name with the highest reviews')
+plt.show()
+
+```
+
+![image](https://github.com/user-attachments/assets/302700da-ef5e-4f6d-bd79-17fc1533a174)
+
+ 
+**Insights** – Micheal significantly outperforms other hosts with approximately 8,745 total reviews, followed by David and John with around 6,835 and 6,515 total reviews respectively suggesting that these hosts have longer hosting experience or superior service quality. Brooklyn and Manhattan consistently dominate and represent the largest portion of reviews across most hosts, particularly prominent for Micheal, David, John, and Jason. Queens shows moderate but consistent presence across all hosts, while Bronx and Staten Island have minimal representation, indicating these areas may have lower Airbnb activity or different dynamics.
+
+
+### Conclusions
+
+•	Most NYC listings are affordable (< $1,000/night), Manhattan being the most expensive and Bronx the cheapest.
+
+•	Entire homes/apartments dominates (52.7%) while shared rooms are rare (2.75%).
+
+•	No strong link exists between price and availability or minimum stay requirements.
+
+•	June sees peak bookings, with reviews dropping sharply afterward.
+
+### Recommendations
+
+•	Hosts – Adjust prices by location/seasons, prioritize entire homes, and improve service to boost reviews.
+
+•	Travelers – Choose Bronx/Queens for budget stays or Manhattan for premium options.
+
+•	Commercial Hosts – Expand into underserved areas (Staten Island/Bronx).
+
+•	Policymakers – Monitor commercial host dominance to ensure market balance.
+
+•	Tourism Promotion – Promoting tourism in less active boroughs like Staten Island could help distribute Airbnb activity more evenly across NYC.
+
+•	Service Quality – Emulating the review success of top host like Micheal and David by improving service quality could enhance reputation and bookings 
+
 
 
